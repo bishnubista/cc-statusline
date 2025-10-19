@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Claude Code Simple Statusline Uninstaller
-# One-command uninstall: bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/uninstall.sh)
+# One-command uninstall: bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/uninstall.sh)
 
 set -e
 

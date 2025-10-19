@@ -8,14 +8,25 @@
 
 ## Installation
 
-### Step 1: Copy the statusline script
+### Automated Installation (Recommended)
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
+```
+
+The installer will:
+- Check for required dependencies (jq) and offer to install if missing
+- Download the statusline script to `~/.claude/statusline.sh`
+- Configure your `~/.claude/settings.json` (with backup if it exists)
+
+### Manual Installation
 
 ```bash
 # Create the Claude config directory if it doesn't exist
 mkdir -p ~/.claude
 
-# Copy the statusline script
-cp statusline.sh ~/.claude/statusline.sh
+# Download the statusline script
+curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/statusline.sh -o ~/.claude/statusline.sh
 
 # Make it executable
 chmod +x ~/.claude/statusline.sh

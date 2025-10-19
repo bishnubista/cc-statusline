@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Claude Code Simple Statusline Installer
-# One-command installation: bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/install.sh)
+# One-command installation: bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
 
 set -e  # Exit on error
 
@@ -11,7 +11,7 @@ VERSION="${VERSION:-main}"
 CLAUDE_DIR="$HOME/.claude"
 STATUSLINE_SCRIPT="$CLAUDE_DIR/statusline.sh"
 SETTINGS_FILE="$CLAUDE_DIR/settings.json"
-REPO_RAW_URL="https://raw.githubusercontent.com/bishnubista/cc-statusline/${VERSION}"
+REPO_RAW_URL="https://raw.githubusercontent.com/bishnubista/cc-statusline/${VERSION}/scripts"
 
 echo "🚀 Installing Claude Code Simple Statusline..."
 if [ "$VERSION" = "main" ]; then

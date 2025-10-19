@@ -3,7 +3,7 @@
 A simple, clean statusline for Claude Code that displays essential context: model, directory, git branch, and output style.
 
 ![Claude Code Statusline](https://img.shields.io/badge/Claude_Code-Statusline-5436DA?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-1.0.1-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-2.0.0-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
 ## Features
@@ -20,12 +20,12 @@ A simple, clean statusline for Claude Code that displays essential context: mode
 
 **Latest stable version (recommended):**
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
 ```
 
 **Specific version:**
 ```bash
-VERSION=v1.0.0 bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/install.sh)
+VERSION=v2.0.0 bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
 ```
 
 Then restart Claude Code!
@@ -37,7 +37,7 @@ Then restart Claude Code!
 
 ```bash
 # Download the statusline script
-curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/statusline.sh -o ~/.claude/statusline.sh
+curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/statusline.sh -o ~/.claude/statusline.sh
 chmod +x ~/.claude/statusline.sh
 
 # Configure Claude Code (create or update ~/.claude/settings.json)
@@ -82,11 +82,21 @@ This statusline focuses on **context awareness** rather than metrics:
 - **Output Style**: See which communication style Claude Code is using (helpful when switching between styles)
   - *Note: Output style is a Claude Code feature that can be configured using the `/output-style` command*
 
-## Files
+## Repository Structure
 
-- `statusline.sh` - Main statusline script
-- `INSTALLATION.md` - Detailed installation and troubleshooting guide
-- `settings.json` - Example Claude Code configuration
+```
+cc-statusline/
+├── scripts/
+│   ├── statusline.sh    # Main statusline script
+│   ├── install.sh       # One-command installer
+│   └── uninstall.sh     # One-command uninstaller
+├── assets/
+│   └── statusline-example.png  # Screenshot
+├── CHANGELOG.md         # Version history
+├── README.md            # This file
+├── INSTALLATION.md      # Detailed setup guide
+└── settings.json        # Example configuration
+```
 
 ## Requirements
 
@@ -107,7 +117,7 @@ This statusline focuses on **context awareness** rather than metrics:
 
 **One-Command Uninstall:**
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/uninstall.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/uninstall.sh)
 ```
 
 **Manual Uninstall:**
@@ -134,7 +144,7 @@ The statusline will automatically update to show your active output style!
 
 ## Customization
 
-The statusline is intentionally minimal, but you can customize it by editing `statusline.sh`:
+The statusline is intentionally minimal, but you can customize it by editing `~/.claude/statusline.sh` after installation:
 
 ### Change Display Icons
 
@@ -155,7 +165,7 @@ echo "🤖 $model | 🕐 $timestamp | $dir_display | ..."
 
 ## Version History
 
-Current version: **v1.0.1**
+Current version: **v2.0.0**
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed release history and changes.
 

@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-10-18
+
+### Changed - BREAKING CHANGES ⚠️
+- **Repository structure reorganized**: All shell scripts moved to `scripts/` directory
+- **Installation URL changed**: Update to new path `https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh`
+- **Uninstall URL changed**: Update to new path `https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/uninstall.sh`
+
+### Added
+- Added "Repository Structure" section to README showing new organization
+- Improved documentation with clearer installation paths
+
+### Migration Guide
+If you installed v1.0.x, the statusline will continue to work (it's already installed in `~/.claude/statusline.sh`).
+
+For new installations or reinstalls, use the new URL:
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
+```
+
+### Why This Change?
+Better project organization with scripts separated into their own directory, making the repository root cleaner with only documentation files (README, CHANGELOG) and configuration examples.
+
 ## [1.0.1] - 2025-10-18
 
 ### Removed
@@ -49,5 +71,6 @@ This release fully embraces the "Simple Statusline" philosophy by removing metri
 - Minimal dependencies (bash, jq, git optional)
 - Semantic versioning support
 
+[2.0.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.0.0
 [1.0.1]: https://github.com/bishnubista/cc-statusline/releases/tag/v1.0.1
 [1.0.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v1.0.0
