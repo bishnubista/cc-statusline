@@ -3,7 +3,7 @@
 A simple, clean statusline for Claude Code that displays essential context: model, directory, git branch, and output style.
 
 ![Claude Code Statusline](https://img.shields.io/badge/Claude_Code-Statusline-5436DA?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-1.0.1-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
 ## Features
@@ -155,7 +155,7 @@ echo "🤖 $model | 🕐 $timestamp | $dir_display | ..."
 
 ## Version History
 
-Current version: **v1.0.0**
+Current version: **v1.0.1**
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed release history and changes.
 

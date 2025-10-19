@@ -1,11 +1,10 @@
-# Claude Code Custom Statusline Setup
+# Claude Code Simple Statusline Setup
 
 ## Features
 - 🤖 Model name display
-- 🌿 Git branch (or 📁 no-git if not in a repo)
-- 🧠 Session token usage with percentage (out of 200K context limit)
-- 📊 Weekly token usage tracking with visual indicators (personal tracking, not official Claude limit)
-- 📚 Historical weekly usage log database
+- 📂 Current directory name
+- 🌿 Git branch (when in a git repository)
+- 📝 Output style display
 
 ## Installation
 
@@ -42,27 +41,27 @@ The statusline will appear at the bottom of your Claude Code interface.
 
 ## Customization
 
-### Adjust Weekly Limit
+### Change Display Format
 
-**NOTE:** The weekly limit is for **personal tracking only** - it's not an official Claude Code limit. Claude Code charges based on usage, not hard weekly token limits.
-
-Edit the `weekly_limit` variable in `statusline.sh` (around line 113):
+You can customize the statusline by editing `~/.claude/statusline.sh`:
 
 ```bash
-weekly_limit=5000000  # Change this to your personal tracking goal
+# Change emojis
+dir_display="📂 $dir_name"    # Directory emoji
+git_info="🌿 $branch"         # Git branch emoji
+
+# Modify output format (lines 33-37)
+echo "🤖 $model | $dir_display | $git_info | 📝 $output_style"
 ```
 
-**Suggested limits for personal tracking:**
-- **Light usage**: ~1,000,000 tokens/week
-- **Moderate usage**: ~5,000,000 tokens/week
-- **Heavy usage**: ~10,000,000+ tokens/week
+### Add Additional Information
 
-### Color Indicators
-
-The weekly display shows:
-- ✅ Green: < 50% of weekly limit
-- ⚠️ Warning: 50-80% of weekly limit
-- 🔴 Critical: > 80% of weekly limit
+The JSON input from Claude Code contains other fields you can use:
+```bash
+# Example additions:
+session_id=$(echo "$input" | jq -r '.session_id // ""')
+timestamp=$(date +%H:%M)
+```
 
 ## Testing
 
@@ -71,23 +70,33 @@ Test your statusline before using it:
 ```bash
 echo '{
   "model": {"display_name": "Claude Sonnet 4.5"},
-  "workspace": {"current_dir": "/your/project"},
-  "transcript_path": "/path/to/transcript.json",
-  "session_id": "test"
+  "workspace": {"current_dir": "/Users/you/projects/my-app"},
+  "output_style": {"name": "Educational"}
 }' | ~/.claude/statusline.sh
+```
+
+Expected output (if in a git repo):
+```
+🤖 Claude Sonnet 4.5 | 📂 my-app | 🌿 main | 📝 Educational
 ```
 
 ## Example Output
 
+**In a git repository:**
 ```
-🤖 Sonnet 4.5 | 🌿 main | 🧠 Session: 45000/200000 (22%) | 📊 Weekly: 45000 tokens
+🤖 Sonnet 4.5 | 📂 cc-statusline | 🌿 main | 📝 Educational
+```
+
+**Outside a git repository:**
+```
+🤖 Sonnet 4.5 | 📂 Documents | 📝 Concise
 ```
 
 Explanation:
-- **🤖 Sonnet 4.5**: Current model
-- **🌿 main**: Git branch (or 📁 no-git)
-- **🧠 Session: 45000/200000 (22%)**: Current conversation using 45K out of 200K context limit (22%)
-- **📊 Weekly: 45000 tokens**: This week's total usage (resets Monday)
+- **🤖 Sonnet 4.5**: Current Claude model
+- **📂 cc-statusline**: Current directory (basename only)
+- **🌿 main**: Git branch (only shown when in a git repo)
+- **📝 Educational**: Active output style
 
 ## Troubleshooting
 
@@ -109,41 +118,19 @@ sudo apt-get install jq
 # See: https://jqlang.github.io/jq/download/
 ```
 
-### Weekly tracking not updating
-- Check permissions: `ls -la ~/.claude/weekly_usage.json`
-- Verify the file exists and is writable
-- Delete `~/.claude/weekly_usage.json` to reset tracking
-
-## Viewing Usage Logs
-
-View your historical weekly usage data:
-
-```bash
-# View all weekly logs
-bash view_weekly_logs.sh
-
-# Or install it globally
-cp view_weekly_logs.sh ~/.claude/view_weekly_logs.sh
-chmod +x ~/.claude/view_weekly_logs.sh
-~/.claude/view_weekly_logs.sh
-```
-
-The log viewer shows:
-- Current week in progress
-- Completed weeks with token counts
-- Statistics (total, average per week)
+### Output style not showing
+- Make sure you're using Claude Code 2.0+ (output styles were added in v2.0)
+- The output style reflects your current `/output-style` setting
+- If it shows "default", no custom output style is active
 
 ## Files Created
 
-- `~/.claude/statusline.sh` - The statusline script
-- `~/.claude/weekly_usage.json` - Current week's tracking data (auto-created)
-- `~/.claude/weekly_usage_log.jsonl` - Historical weekly usage database (auto-created)
-- `~/.claude/settings.json` - Claude Code configuration
+- `~/.claude/statusline.sh` - The statusline script (you create this during installation)
+- `~/.claude/settings.json` - Claude Code configuration (you create this during installation)
 
 ## Notes
 
-- **Session tokens**: Shows current conversation's token usage (resets when you start a new conversation)
-- **Weekly tracking**: Resets every Monday at midnight
-- **Personal tracking**: The 5M weekly limit is not an official Claude Code limit - it's for your personal usage tracking
-- **Historical logs**: Each completed week is automatically logged to `weekly_usage_log.jsonl`
-- Token counts exclude assistant output tokens, only input tokens are tracked
+- **Lightweight**: This statusline intentionally avoids tracking metrics or writing files
+- **Context-focused**: Displays information to help you stay oriented in your work
+- **Git-aware**: Automatically detects git repositories and shows branch info
+- **Output style**: Useful when switching between different Claude Code communication styles
