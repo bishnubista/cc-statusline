@@ -1,29 +1,46 @@
-# Claude Code Custom Statusline
+# Claude Code Simple Statusline
 
-A custom statusline for Claude Code that displays real-time token usage, git branch, and personal weekly usage tracking.
+A simple, clean statusline for Claude Code that displays essential context: model, directory, git branch, and output style.
 
 ![Claude Code Statusline](https://img.shields.io/badge/Claude_Code-Statusline-5436DA?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge)
+![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
 ## Features
 
 - 🤖 **Model Display**: Shows current Claude model (e.g., Sonnet 4.5)
-- 🌿 **Git Integration**: Displays current git branch or indicates non-git directories
-- 🧠 **Session Tracking**: Real-time token usage for current conversation (out of 200K context limit)
-- 📊 **Weekly Tracking**: Personal usage tracking with Monday reset (not an official Claude limit)
-- 📚 **Historical Logs**: Automatic weekly usage database for long-term tracking
-- 🎨 **Visual Indicators**: Color-coded alerts (✅ ⚠️ 🔴) based on usage levels
+- 📂 **Current Directory**: Displays the basename of your working directory
+- 🌿 **Git Integration**: Shows current git branch when in a git repository
+- 📝 **Output Style**: Displays your active Claude Code output style (configurable via `/output-style` command)
+  - Examples: Educational, Concise, Professional, etc.
 
 ## Quick Start
 
-```bash
-# Clone or download this repo
-cd cc-statusline
+### One-Command Install
 
-# Install
-cp statusline.sh ~/.claude/statusline.sh
+**Latest stable version (recommended):**
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/install.sh)
+```
+
+**Specific version:**
+```bash
+VERSION=v1.0.0 bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/install.sh)
+```
+
+Then restart Claude Code!
+
+### Manual Install
+
+<details>
+<summary>Click to expand manual installation steps</summary>
+
+```bash
+# Download the statusline script
+curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/statusline.sh -o ~/.claude/statusline.sh
 chmod +x ~/.claude/statusline.sh
 
-# Configure Claude Code
+# Configure Claude Code (create or update ~/.claude/settings.json)
 cat > ~/.claude/settings.json << 'EOF'
 {
   "statusLine": {
@@ -37,81 +54,44 @@ EOF
 # Restart Claude Code
 ```
 
+</details>
+
 ## What You'll See
 
+**Example in action:**
+
+![Statusline Screenshot](assets/statusline-example.png)
+
+**In a git repository:**
 ```
-🤖 Sonnet 4.5 | 🌿 main | 🧠 Session: 45000/200000 (22%) | 📊 Weekly: 45000 tokens
-```
-
-- **Session**: Current conversation's token usage out of 200K context limit (resets on new conversation)
-- **Weekly**: Cumulative tokens this week (personal tracking, resets Monday)
-
-## Usage Log Viewer
-
-Track your Claude Code usage over time:
-
-```bash
-bash view_weekly_logs.sh
+🤖 Sonnet 4.5 | 📂 cc-statusline | 🌿 main | 📝 Explanatory
 ```
 
-Output:
+**Outside a git repository:**
 ```
-=== Claude Code Weekly Usage Logs ===
-
-📊 Current Week (In Progress):
-Week starting: 2025-10-13 | Total tokens: 27064 | Sessions: 1
-
-📚 Completed Weeks:
-─────────────────────────────────────────────────────
-Week: 2025-10-06 to 2025-10-13 | Tokens: 4500000 | Sessions: 23
-Week: 2025-09-29 to 2025-10-06 | Tokens: 3200000 | Sessions: 18
-─────────────────────────────────────────────────────
-📈 Statistics:
-   Total weeks logged: 2
-   Total tokens used: 7700000
-   Average per week: 3850000
+🤖 Sonnet 4.5 | 📂 my-project | 📝 Concise
 ```
 
-## Important Notes
+## Why This Statusline?
 
-### Weekly Tracking is Personal, Not Official
+This statusline focuses on **context awareness** rather than metrics:
 
-The 5M weekly token limit shown in the statusline is **for personal tracking only**. Claude Code doesn't impose hard weekly token limits - it charges based on actual API usage.
-
-This feature helps you:
-- Monitor your own usage patterns
-- Set personal budgets/goals
-- Track costs over time
-- Identify usage spikes
-
-You can adjust the limit in `statusline.sh`:
-```bash
-weekly_limit=5000000  # Change to your personal goal
-```
-
-### Token Counting
-
-- Only **input tokens** are counted (what you send to Claude)
-- Output tokens (Claude's responses) are not tracked
-- Session tokens reset when you start a new conversation
-- Weekly tokens accumulate across all sessions, reset every Monday
+- **Model**: Know which Claude model you're using for the current conversation
+- **Directory**: Quick reference to confirm you're in the right project
+- **Git Branch**: Avoid making changes on the wrong branch
+- **Output Style**: See which communication style Claude Code is using (helpful when switching between styles)
+  - *Note: Output style is a Claude Code feature that can be configured using the `/output-style` command*
 
 ## Files
 
 - `statusline.sh` - Main statusline script
-- `view_weekly_logs.sh` - Usage log viewer
 - `INSTALLATION.md` - Detailed installation and troubleshooting guide
 - `settings.json` - Example Claude Code configuration
 
-### Auto-Created Files
-
-- `~/.claude/weekly_usage.json` - Current week's data
-- `~/.claude/weekly_usage_log.jsonl` - Historical weekly logs (JSONL database)
-
 ## Requirements
 
-- Claude Code 2.0+
-- `jq` (JSON processor)
+- **Claude Code 2.0+**
+- **jq** (JSON processor) - Install before running the installer:
   ```bash
   # macOS
   brew install jq
@@ -119,38 +99,65 @@ weekly_limit=5000000  # Change to your personal goal
   # Ubuntu/Debian
   sudo apt-get install jq
   ```
-- `bash` 4.0+
-- Git (optional, for branch display)
+- **curl** or **wget** (for installation only, usually pre-installed)
+- **bash** (pre-installed on macOS/Linux)
+- **Git** (optional, for branch display)
+
+## Uninstall
+
+**One-Command Uninstall:**
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/uninstall.sh)
+```
+
+**Manual Uninstall:**
+```bash
+rm ~/.claude/statusline.sh
+# Then manually remove the statusLine section from ~/.claude/settings.json
+```
+
+## Configuring Output Style
+
+The **Output Style** displayed in the statusline is a Claude Code feature that controls how Claude communicates with you. You can change it using:
+
+```bash
+/output-style
+```
+
+This will let you choose from different communication styles like:
+- **Educational**: Detailed explanations with context and learning insights
+- **Concise**: Brief, to-the-point responses
+- **Professional**: Formal business communication
+- And more...
+
+The statusline will automatically update to show your active output style!
 
 ## Customization
 
-### Color Thresholds
+The statusline is intentionally minimal, but you can customize it by editing `statusline.sh`:
 
-Edit `statusline.sh` around line 116:
-
-```bash
-if [ "$weekly_percentage" -lt 50 ]; then
-    weekly_color="✅"  # Green zone
-elif [ "$weekly_percentage" -lt 80 ]; then
-    weekly_color="⚠️"  # Warning zone
-else
-    weekly_color="🔴"  # Critical zone
-fi
-```
-
-### Weekly Limit
+### Change Display Icons
 
 ```bash
-weekly_limit=5000000  # Adjust to your personal goal
+dir_display="📂 $dir_name"    # Change 📂 to any emoji
+git_info="🌿 $branch"         # Change 🌿 to any emoji
+# etc.
 ```
 
-### Session Display Format
+### Add Additional Fields
 
-Edit around line 42:
-
+The `$input` JSON contains other data you can extract:
 ```bash
-token_display="🧠 Session: $tokens (${percentage}%)"
+# Example: Add timestamp
+timestamp=$(date +%H:%M)
+echo "🤖 $model | 🕐 $timestamp | $dir_display | ..."
 ```
+
+## Version History
+
+Current version: **v1.0.0**
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed release history and changes.
 
 ## Troubleshooting
 
@@ -159,17 +166,15 @@ See [INSTALLATION.md](INSTALLATION.md#troubleshooting) for detailed troubleshoot
 Common issues:
 - **Statusline not appearing**: Check `~/.claude/settings.json` syntax
 - **"jq: command not found"**: Install jq via your package manager
-- **Token showing N/A**: Transcript file may not be accessible
+- **Git branch not showing**: Make sure you're in a git repository
 
 ## How It Works
 
 1. Claude Code calls `statusline.sh` and passes JSON data via stdin
-2. Script extracts session ID, model name, and transcript path
-3. Parses token usage from system reminder messages in transcript
-4. Tracks tokens per session to avoid double-counting
-5. Maintains weekly totals in `~/.claude/weekly_usage.json`
-6. Logs completed weeks to `~/.claude/weekly_usage_log.jsonl`
-7. Returns formatted statusline string to Claude Code
+2. Script extracts model name, current directory, and output style from the JSON
+3. Checks if the current directory is a git repository
+4. If in a git repo, extracts the current branch name
+5. Returns formatted statusline string to Claude Code
 
 ## License
 
