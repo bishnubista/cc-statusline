@@ -1,9 +1,9 @@
 # Claude Code Simple Statusline
 
-A simple, clean statusline for Claude Code that displays essential context: model, directory, git branch, and output style.
+A simple, clean statusline for Claude Code that displays essential context: model, directory, and git branch.
 
 ![Claude Code Statusline](https://img.shields.io/badge/Claude_Code-Statusline-5436DA?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-2.0.0-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-2.1.0-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
 ## Features
@@ -11,8 +11,6 @@ A simple, clean statusline for Claude Code that displays essential context: mode
 - 🤖 **Model Display**: Shows current Claude model (e.g., Sonnet 4.5)
 - 📂 **Current Directory**: Displays the basename of your working directory
 - 🌿 **Git Integration**: Shows current git branch when in a git repository
-- 📝 **Output Style**: Displays your active Claude Code output style (configurable via `/output-style` command)
-  - Examples: Educational, Concise, Professional, etc.
 
 ## Quick Start
 
@@ -64,12 +62,12 @@ EOF
 
 **In a git repository:**
 ```
-🤖 Sonnet 4.5 | 📂 cc-statusline | 🌿 main | 📝 Explanatory
+🤖 Sonnet 4.5 | 📂 cc-statusline | 🌿 main
 ```
 
 **Outside a git repository:**
 ```
-🤖 Sonnet 4.5 | 📂 my-project | 📝 Concise
+🤖 Sonnet 4.5 | 📂 my-project
 ```
 
 ## Why This Statusline?
@@ -79,8 +77,6 @@ This statusline focuses on **context awareness** rather than metrics:
 - **Model**: Know which Claude model you're using for the current conversation
 - **Directory**: Quick reference to confirm you're in the right project
 - **Git Branch**: Avoid making changes on the wrong branch
-- **Output Style**: See which communication style Claude Code is using (helpful when switching between styles)
-  - *Note: Output style is a Claude Code feature that can be configured using the `/output-style` command*
 
 ## Repository Structure
 
@@ -126,22 +122,6 @@ rm ~/.claude/statusline.sh
 # Then manually remove the statusLine section from ~/.claude/settings.json
 ```
 
-## Configuring Output Style
-
-The **Output Style** displayed in the statusline is a Claude Code feature that controls how Claude communicates with you. You can change it using:
-
-```bash
-/output-style
-```
-
-This will let you choose from different communication styles like:
-- **Educational**: Detailed explanations with context and learning insights
-- **Concise**: Brief, to-the-point responses
-- **Professional**: Formal business communication
-- And more...
-
-The statusline will automatically update to show your active output style!
-
 ## Customization
 
 The statusline is intentionally minimal, but you can customize it by editing `~/.claude/statusline.sh` after installation:
@@ -165,7 +145,7 @@ echo "🤖 $model | 🕐 $timestamp | $dir_display | ..."
 
 ## Version History
 
-Current version: **v2.0.0**
+Current version: **v2.1.0**
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed release history and changes.
 
@@ -181,7 +161,7 @@ Common issues:
 ## How It Works
 
 1. Claude Code calls `statusline.sh` and passes JSON data via stdin
-2. Script extracts model name, current directory, and output style from the JSON
+2. Script extracts model name and current directory from the JSON
 3. Checks if the current directory is a git repository
 4. If in a git repo, extracts the current branch name
 5. Returns formatted statusline string to Claude Code

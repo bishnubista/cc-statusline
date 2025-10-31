@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2025-10-31
+
+### Removed
+- **Output style display**: Removed deprecated output style field from statusline
+  - Output styles are deprecated by Claude Code (removal date: November 5, 2025)
+  - Replaced with plugins feature in Claude Code
+
+### Changed
+- Simplified statusline to focus on core context: model, directory, and git branch
+- Updated README to remove output style references and configuration section
+- Updated feature documentation to reflect streamlined display
+
+### Why This Change?
+Claude Code is deprecating the output styles feature in favor of plugins (removal date: November 5, 2025). The statusline now focuses purely on contextual information (model, directory, branch) rather than configuration settings. This keeps the statusline clean and future-proof.
+
 ## [2.0.0] - 2025-10-18
 
 ### Changed - BREAKING CHANGES ⚠️
@@ -71,6 +86,7 @@ This release fully embraces the "Simple Statusline" philosophy by removing metri
 - Minimal dependencies (bash, jq, git optional)
 - Semantic versioning support
 
+[2.1.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.1.0
 [2.0.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.0.0
 [1.0.1]: https://github.com/bishnubista/cc-statusline/releases/tag/v1.0.1
 [1.0.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v1.0.0

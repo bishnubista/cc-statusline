@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Claude Code Simple Statusline
-# Shows: Model | Current Directory | Git Branch | Output Style
+# Shows: Model | Current Directory | Git Branch
 
 # Read JSON input from Claude Code
 input=$(cat)
@@ -26,12 +26,9 @@ else
     git_info=""
 fi
 
-# Extract output style
-output_style=$(echo "$input" | jq -r '.output_style.name // "default"')
-
 # Output the statusline (show git branch only if in git repo)
 if [ -n "$git_info" ]; then
-    echo "🤖 $model | $dir_display | $git_info | 📝 $output_style"
+    echo "🤖 $model | $dir_display | $git_info"
 else
-    echo "🤖 $model | $dir_display | 📝 $output_style"
+    echo "🤖 $model | $dir_display"
 fi
