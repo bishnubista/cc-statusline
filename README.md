@@ -1,16 +1,18 @@
 # Claude Code Simple Statusline
 
-A simple, clean statusline for Claude Code that displays essential context: model, directory, and git branch.
+A simple, clean statusline for Claude Code that displays essential context: model, directory, git branch, context usage, and output style.
 
 ![Claude Code Statusline](https://img.shields.io/badge/Claude_Code-Statusline-5436DA?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-2.1.0-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-2.2.0-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
 ## Features
 
-- 🤖 **Model Display**: Shows current Claude model (e.g., Sonnet 4.5)
-- 📂 **Current Directory**: Displays the basename of your working directory
+- 🤖 **Model Display**: Shows current Claude model (e.g., Claude Opus 4.5)
+- 📁 **Current Directory**: Displays the basename of your working directory
 - 🌿 **Git Integration**: Shows current git branch when in a git repository
+- 🧠 **Context Usage**: Shows token usage vs context window size (e.g., 5.2k/200k)
+- 📝 **Output Style**: Shows your active Claude Code output style
 
 ## Quick Start
 
@@ -23,7 +25,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/ma
 
 **Specific version:**
 ```bash
-VERSION=v2.0.0 bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
+VERSION=v2.2.0 bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
 ```
 
 Then restart Claude Code!
@@ -62,21 +64,23 @@ EOF
 
 **In a git repository:**
 ```
-🤖 Sonnet 4.5 | 📂 cc-statusline | 🌿 main
+🤖 Claude Opus 4.5 | 📁 cc-statusline | 🌿 main | 🧠 5.2k/200k | 📝 Explanatory
 ```
 
 **Outside a git repository:**
 ```
-🤖 Sonnet 4.5 | 📂 my-project
+🤖 Claude Sonnet 4 | 📁 my-project | 🧠 1.5k/200k | 📝 default
 ```
 
 ## Why This Statusline?
 
-This statusline focuses on **context awareness** rather than metrics:
+This statusline focuses on **context awareness**:
 
 - **Model**: Know which Claude model you're using for the current conversation
 - **Directory**: Quick reference to confirm you're in the right project
 - **Git Branch**: Avoid making changes on the wrong branch
+- **Context Usage**: Monitor how much of the context window you've used
+- **Output Style**: See your current communication style at a glance
 
 ## Repository Structure
 
@@ -129,9 +133,8 @@ The statusline is intentionally minimal, but you can customize it by editing `~/
 ### Change Display Icons
 
 ```bash
-dir_display="📂 $dir_name"    # Change 📂 to any emoji
-git_info="🌿 $branch"         # Change 🌿 to any emoji
-# etc.
+# In the "Build output with emojis" section:
+output="🤖 $model_name | 📁 $folder"   # Change emojis as desired
 ```
 
 ### Add Additional Fields
@@ -140,12 +143,12 @@ The `$input` JSON contains other data you can extract:
 ```bash
 # Example: Add timestamp
 timestamp=$(date +%H:%M)
-echo "🤖 $model | 🕐 $timestamp | $dir_display | ..."
+output="🤖 $model_name | 🕐 $timestamp | 📁 $folder | ..."
 ```
 
 ## Version History
 
-Current version: **v2.1.0**
+Current version: **v2.2.0**
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed release history and changes.
 
@@ -157,14 +160,16 @@ Common issues:
 - **Statusline not appearing**: Check `~/.claude/settings.json` syntax
 - **"jq: command not found"**: Install jq via your package manager
 - **Git branch not showing**: Make sure you're in a git repository
+- **Context showing 0/200k**: Normal at conversation start, updates as you chat
 
 ## How It Works
 
 1. Claude Code calls `statusline.sh` and passes JSON data via stdin
-2. Script extracts model name and current directory from the JSON
+2. Script extracts model name, directory, output style, and token counts from JSON
 3. Checks if the current directory is a git repository
 4. If in a git repo, extracts the current branch name
-5. Returns formatted statusline string to Claude Code
+5. Formats context usage (tokens used / context window size)
+6. Returns formatted statusline string to Claude Code
 
 ## License
 

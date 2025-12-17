@@ -1,9 +1,10 @@
 # Claude Code Simple Statusline Setup
 
 ## Features
-- 🤖 Model name display
-- 📂 Current directory name
+- 🤖 Model name display (e.g., Claude Opus 4.5)
+- 📁 Current directory name
 - 🌿 Git branch (when in a git repository)
+- 🧠 Context usage (tokens used / context window size)
 - 📝 Output style display
 
 ## Installation
@@ -57,12 +58,8 @@ The statusline will appear at the bottom of your Claude Code interface.
 You can customize the statusline by editing `~/.claude/statusline.sh`:
 
 ```bash
-# Change emojis
-dir_display="📂 $dir_name"    # Directory emoji
-git_info="🌿 $branch"         # Git branch emoji
-
-# Modify output format (lines 33-37)
-echo "🤖 $model | $dir_display | $git_info | 📝 $output_style"
+# Change emojis (in the "Build output with emojis" section)
+output="🤖 $model_name | 📁 $folder"   # Model and folder
 ```
 
 ### Add Additional Information
@@ -80,34 +77,36 @@ Test your statusline before using it:
 
 ```bash
 echo '{
-  "model": {"display_name": "Claude Sonnet 4.5"},
+  "model": {"display_name": "Claude Opus 4.5"},
   "workspace": {"current_dir": "/Users/you/projects/my-app"},
-  "output_style": {"name": "Educational"}
+  "output_style": {"name": "Explanatory"},
+  "context_window": {"total_input_tokens": 5200, "total_output_tokens": 1000, "context_window_size": 200000}
 }' | ~/.claude/statusline.sh
 ```
 
 Expected output (if in a git repo):
 ```
-🤖 Claude Sonnet 4.5 | 📂 my-app | 🌿 main | 📝 Educational
+🤖 Claude Opus 4.5 | 📁 my-app | 🌿 main | 🧠 6.2k/200k | 📝 Explanatory
 ```
 
 ## Example Output
 
 **In a git repository:**
 ```
-🤖 Sonnet 4.5 | 📂 cc-statusline | 🌿 main | 📝 Educational
+🤖 Claude Opus 4.5 | 📁 cc-statusline | 🌿 main | 🧠 5.2k/200k | 📝 Explanatory
 ```
 
 **Outside a git repository:**
 ```
-🤖 Sonnet 4.5 | 📂 Documents | 📝 Concise
+🤖 Claude Sonnet 4 | 📁 Documents | 🧠 1.5k/200k | 📝 default
 ```
 
 Explanation:
-- **🤖 Sonnet 4.5**: Current Claude model
-- **📂 cc-statusline**: Current directory (basename only)
+- **🤖 Claude Opus 4.5**: Current Claude model
+- **📁 cc-statusline**: Current directory (basename only)
 - **🌿 main**: Git branch (only shown when in a git repo)
-- **📝 Educational**: Active output style
+- **🧠 5.2k/200k**: Context usage (tokens used / context window size)
+- **📝 Explanatory**: Active output style
 
 ## Troubleshooting
 
@@ -134,6 +133,10 @@ sudo apt-get install jq
 - The output style reflects your current `/output-style` setting
 - If it shows "default", no custom output style is active
 
+### Context showing 0/200k
+- This is normal at the start of a conversation
+- The values update as you send messages and receive responses
+
 ## Files Created
 
 - `~/.claude/statusline.sh` - The statusline script (you create this during installation)
@@ -141,7 +144,7 @@ sudo apt-get install jq
 
 ## Notes
 
-- **Lightweight**: This statusline intentionally avoids tracking metrics or writing files
 - **Context-focused**: Displays information to help you stay oriented in your work
 - **Git-aware**: Automatically detects git repositories and shows branch info
+- **Token tracking**: Shows how much of the context window you've used
 - **Output style**: Useful when switching between different Claude Code communication styles

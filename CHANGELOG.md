@@ -5,20 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2025-12-17
+
+### Added
+- **Context usage display**: Added 🧠 context tracking showing tokens used vs context window size (e.g., `5.2k/200k`)
+  - Uses Claude Code 2.0.17's `context_window` JSON data
+  - Formats large numbers in compact `k` notation (e.g., 5200 → 5.2k)
+- **Output style display**: Added back 📝 output style to statusline
+
+### Changed
+- Updated format to: `🤖 model | 📁 folder | 🌿 branch | 🧠 context | 📝 style`
+- Changed folder emoji from 📂 to 📁
+- Full model name display (e.g., "Claude Opus 4.5" instead of just "Opus 4.5")
+- Updated all documentation to match new format
+
+### Why This Change?
+Claude Code 2.0.17 provides rich JSON data including context window usage. This version leverages that data to show how much of your context window you've used - helpful for long conversations where you want to monitor token usage.
+
 ## [2.1.0] - 2025-10-31
 
 ### Removed
-- **Output style display**: Removed deprecated output style field from statusline
-  - Output styles are deprecated by Claude Code (removal date: November 5, 2025)
-  - Replaced with plugins feature in Claude Code
+- **Output style display**: Temporarily removed output style field from statusline
 
 ### Changed
 - Simplified statusline to focus on core context: model, directory, and git branch
-- Updated README to remove output style references and configuration section
-- Updated feature documentation to reflect streamlined display
-
-### Why This Change?
-Claude Code is deprecating the output styles feature in favor of plugins (removal date: November 5, 2025). The statusline now focuses purely on contextual information (model, directory, branch) rather than configuration settings. This keeps the statusline clean and future-proof.
 
 ## [2.0.0] - 2025-10-18
 
@@ -86,6 +96,7 @@ This release fully embraces the "Simple Statusline" philosophy by removing metri
 - Minimal dependencies (bash, jq, git optional)
 - Semantic versioning support
 
+[2.2.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.2.0
 [2.1.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.1.0
 [2.0.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.0.0
 [1.0.1]: https://github.com/bishnubista/cc-statusline/releases/tag/v1.0.1
