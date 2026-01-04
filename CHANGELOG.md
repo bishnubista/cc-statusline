@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-01-03
+
+### Fixed
+- **Context usage now shows accurate values after compaction/sub-agents**: Previously displayed cumulative tokens (e.g., `643.9k/200k`) which was confusing after context compaction or running multiple sub-agents. Now shows actual current context window usage.
+
+### Changed
+- Switched from `total_input_tokens`/`total_output_tokens` (cumulative) to `current_usage` object (actual context state)
+- Context calculation now includes cache tokens (`cache_creation_input_tokens` + `cache_read_input_tokens`)
+- Added fallback to cumulative totals for backward compatibility with older Claude Code versions
+
+### Why This Change?
+When Claude Code compacts context or runs sub-agents, the cumulative token counters keep growing even though the actual context window is smaller. This led to confusing displays like `643.9k/200k`. The new approach uses the `current_usage` object which reflects what's actually in the context window right now.
+
 ## [2.2.0] - 2025-12-17
 
 ### Added
@@ -96,6 +109,7 @@ This release fully embraces the "Simple Statusline" philosophy by removing metri
 - Minimal dependencies (bash, jq, git optional)
 - Semantic versioning support
 
+[2.3.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.3.0
 [2.2.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.2.0
 [2.1.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.1.0
 [2.0.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.0.0

@@ -3,7 +3,7 @@
 A simple, clean statusline for Claude Code that displays essential context: model, directory, git branch, context usage, and output style.
 
 ![Claude Code Statusline](https://img.shields.io/badge/Claude_Code-Statusline-5436DA?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-2.2.0-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-2.3.0-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
 ## Features
@@ -25,7 +25,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/ma
 
 **Specific version:**
 ```bash
-VERSION=v2.2.0 bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
+VERSION=v2.3.0 bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
 ```
 
 Then restart Claude Code!
@@ -148,7 +148,7 @@ output="🤖 $model_name | 🕐 $timestamp | 📁 $folder | ..."
 
 ## Version History
 
-Current version: **v2.2.0**
+Current version: **v2.3.0**
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed release history and changes.
 
