@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2026-01-17
+
+### Removed
+- **Cost tracking**: Removed 💰 cost display for cleaner statusline
+- **Cache display**: Removed 📦 cache hits display
+- **bc dependency**: No longer needed without cost comparison
+
+### Changed
+- Simplified statusline format to focus on context awareness
+- Updated screenshot and documentation
+
 ## [3.0.0] - 2026-01-17
 
 ### Added
@@ -130,6 +141,7 @@ This release fully embraces the "Simple Statusline" philosophy by removing metri
 - Minimal dependencies (bash, jq, git optional)
 - Semantic versioning support
 
+[3.1.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v3.1.0
 [3.0.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v3.0.0
 [2.3.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.3.0
 [2.2.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.2.0

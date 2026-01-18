@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# Claude Code Status Line v3.0.0
+# Claude Code Status Line v3.1.0
 # Uses new Claude Code JSON fields for accurate token tracking
-# Format: 🤖 model | 📁 folder | 🌿 branch | 🧠 context% [bar] | 💰 cost | 📦 cache | 📝 style
+# Format: 🤖 model | 📁 folder | 🌿 branch | 🧠 context% [bar] | 📝 style
 
 # Read JSON input from Claude Code
 input=$(cat)
@@ -29,16 +29,6 @@ total_input=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
 total_output=$(echo "$input" | jq -r '.context_window.total_output_tokens // 0')
 session_tokens=$((total_input + total_output))
 
-# Cache efficiency metrics
-cache_read=$(echo "$input" | jq -r '.context_window.current_usage.cache_read_input_tokens // 0')
-
-# ═══════════════════════════════════════════════════════════════
-# COST METRICS
-# ═══════════════════════════════════════════════════════════════
-
-total_cost=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
-# Format cost to 3 decimal places
-cost_formatted=$(awk "BEGIN {printf \"%.3f\", $total_cost}")
 
 # ═══════════════════════════════════════════════════════════════
 # VISUAL ELEMENTS
@@ -117,17 +107,6 @@ context_display="${pct_colored} ${bar} (${session_formatted})"
 output="🤖 $model_name | 📁 $folder"
 [ -n "$branch" ] && output="$output | 🌿 $branch"
 output="$output | 🧠 $context_display"
-
-# Add cost if > 0
-if (( $(echo "$total_cost > 0" | bc -l) )); then
-    output="$output | 💰 \$${cost_formatted}"
-fi
-
-# Add cache indicator if cache is being used (shows efficiency)
-if [ "$cache_read" -gt 0 ]; then
-    cache_formatted=$(format_k "$cache_read")
-    output="$output | 📦 ${cache_formatted}↓"
-fi
 
 # Add output style
 output="$output | 📝 $output_style"
