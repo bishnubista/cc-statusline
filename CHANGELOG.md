@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-01-17
+
+### Added
+- **Visual progress bar**: 5-block bar (`█████`) shows context usage at a glance
+- **Color-coded percentage**: Green (<50%), Yellow (50-80%), Red (>80%) warnings
+- **Cost tracking**: Shows real-time session cost in USD (💰 $0.997)
+- **Cache efficiency display**: Shows tokens read from prompt cache (📦 44.9k↓)
+- **Million token support**: Format now handles 1M+ token windows (displays as `1.2M`)
+
+### Changed
+- **BREAKING**: Switched from raw token counts to `used_percentage` field for accurate context tracking
+- Context display now shows: percentage + progress bar + session tokens (e.g., `23% █░░░░ (65.2k)`)
+- Removed the old `X/200k` format in favor of percentage-based display
+- Added `bc` as a dependency for cost comparison
+
+### Fixed
+- **Context now accurate after compaction**: Uses Claude Code's pre-calculated `used_percentage` which properly reflects context state after automatic compaction or sub-agent runs
+
+### Why This Change?
+The v2.x approach of calculating tokens from `current_usage` was fundamentally flawed - it showed per-API-call tokens, not actual context window state. The new `used_percentage` field from Claude Code is the authoritative source for context usage. Additionally, users requested cost visibility and visual feedback for context limits.
+
 ## [2.3.0] - 2026-01-03
 
 ### Fixed
@@ -109,6 +130,7 @@ This release fully embraces the "Simple Statusline" philosophy by removing metri
 - Minimal dependencies (bash, jq, git optional)
 - Semantic versioning support
 
+[3.0.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v3.0.0
 [2.3.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.3.0
 [2.2.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.2.0
 [2.1.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.1.0
