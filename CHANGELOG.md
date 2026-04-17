@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2026-04-16
+
+### Removed
+- **Context percentage**: Removed the `used_percentage` number from the 🧠 section.
+- **Color-coded percentage (`color_pct`)**: Green/yellow/red thresholds (50% / 80%) no longer apply.
+- **5-block progress bar (`progress_bar`)**: The visual bar was derived from the percentage and has been removed with it.
+- **Unused JSON reads**: `context_window.used_percentage` and `context_window.context_window_size` are no longer parsed.
+
+### Changed
+- 🧠 section now shows just the cumulative session token count (e.g., `🧠 72.3k` or `🧠 1.2M`).
+- Simplified the script — two fewer helper functions and a shorter build-output step.
+
+### Why This Change?
+Claude Opus 4.7 supports a 1M-token context window (model ID `claude-opus-4-7[1m]`). The fixed percentage thresholds used for the colored warning (green <50%, yellow 50-80%, red >80%) were tuned against the 200k default. At 1M, "10% used" is already 100k tokens — a sizable conversation — so the color signal misleads rather than warns. Rather than re-tune thresholds per model, this release removes the percent entirely and keeps an absolute token counter, which is meaningful at any context size. The existing `format_k` helper already handles the `M` suffix (added in v3.0.0), so no formatting work is needed.
+
 ## [3.1.0] - 2026-01-17
 
 ### Removed
@@ -141,6 +156,7 @@ This release fully embraces the "Simple Statusline" philosophy by removing metri
 - Minimal dependencies (bash, jq, git optional)
 - Semantic versioning support
 
+[3.2.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v3.2.0
 [3.1.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v3.1.0
 [3.0.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v3.0.0
 [2.3.0]: https://github.com/bishnubista/cc-statusline/releases/tag/v2.3.0
