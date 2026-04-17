@@ -36,6 +36,8 @@ bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/ma
 VERSION=v3.2.0 bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
 ```
 
+> **Note:** The specific-version install command only works after the corresponding release tag (e.g., `v3.2.0`) has been published on GitHub. Use the latest stable command above if the tag is not yet available.
+
 Then restart Claude Code!
 
 ### Manual Install
