@@ -1,28 +1,24 @@
 # Claude Code Statusline
 
-A clean statusline for Claude Code with accurate token tracking, visual progress bar, and color-coded context warnings.
+A clean, minimal statusline for Claude Code — model, directory, branch, session tokens, and output style.
 
 ![Claude Code Statusline](https://img.shields.io/badge/Claude_Code-Statusline-5436DA?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-3.1.0-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-3.2.0-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
 ## Features
 
-- 🤖 **Model Display**: Shows current Claude model (e.g., Opus 4.5, Sonnet 4)
+- 🤖 **Model Display**: Shows current Claude model (e.g., Opus 4.7, Sonnet 4.6)
 - 📁 **Current Directory**: Displays the basename of your working directory
 - 🌿 **Git Integration**: Shows current git branch when in a git repository
-- 🧠 **Context Usage**: Color-coded percentage with visual progress bar
-  - 🟢 Green: < 50% used
-  - 🟡 Yellow: 50-80% used
-  - 🔴 Red: > 80% used
+- 🧠 **Session Tokens**: Cumulative input + output tokens for the session (auto-formats as `k` / `M`)
 - 📝 **Output Style**: Shows your active Claude Code output style
 
-## What's New in v3.1.0
+## What's New in v3.2.0
 
-- **Simplified Display**: Removed cost and cache metrics for a cleaner statusline
-- **Accurate Context Tracking**: Uses `used_percentage` field for precise context usage after compaction
-- **Visual Progress Bar**: 5-block bar (`█████`) shows context usage at a glance
-- **Color-Coded Warnings**: Percentage changes color as you approach context limits
+- **Removed context percentage + progress bar**: The fixed green/yellow/red thresholds were tuned for a 200k window; with 1M context models (e.g., Opus 4.7 1M) the percentage no longer carries useful signal.
+- **Kept absolute session token counter**: `format_k` already handles `M` suffix, so the display stays meaningful at any context size.
+- **Simpler script**: Removed the `color_pct` and `progress_bar` helpers along with the `used_percentage` / `context_window_size` JSON reads.
 
 ## Quick Start
 
@@ -37,7 +33,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/ma
 **Specific version:**
 
 ```bash
-VERSION=v3.1.0 bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
+VERSION=v3.2.0 bash <(curl -fsSL https://raw.githubusercontent.com/bishnubista/cc-statusline/main/scripts/install.sh)
 ```
 
 Then restart Claude Code!
@@ -77,35 +73,34 @@ EOF
 **Full example:**
 
 ```text
-🤖 Opus 4.5 | 📁 cc-statusline | 🌿 main | 🧠 25% █░░░░ (72.3k) | 📝 Explanatory
+🤖 Opus 4.7 | 📁 cc-statusline | 🌿 main | 🧠 72.3k | 📝 Explanatory
 ```
 
 **Breakdown of each section:**
 
 | Section | Example | Description |
 |---------|---------|-------------|
-| 🤖 Model | `Opus 4.5` | Current Claude model |
+| 🤖 Model | `Opus 4.7` | Current Claude model |
 | 📁 Folder | `cc-statusline` | Working directory basename |
 | 🌿 Branch | `main` | Git branch (if in repo) |
-| 🧠 Context | `25% █░░░░ (72.3k)` | Usage %, visual bar, session tokens |
+| 🧠 Tokens | `72.3k` | Cumulative session tokens (input + output), auto-scales to `M` |
 | 📝 Style | `Explanatory` | Output style setting |
 
-**Context usage at different levels:**
+**Session tokens at different levels:**
 
 ```text
-Low usage:    🧠 15% ░░░░░ (12.3k)   ← Green
-Medium usage: 🧠 65% ███░░ (89.2k)   ← Yellow
-High usage:   🧠 92% ████░ (156.4k)  ← Red (warning!)
+Short session:   🧠 12.3k
+Medium session:  🧠 89.2k
+Long session:    🧠 1.2M
 ```
 
 ## Why This Statusline?
 
-This statusline focuses on **context awareness**:
+This statusline focuses on **staying oriented**:
 
-- **Accurate Percentage**: Uses Claude Code's `used_percentage` field which accounts for context compaction and sub-agent runs
-- **Visual Feedback**: Progress bar and color coding let you see context state at a glance
-- **Git Branch**: Avoid making changes on the wrong branch
-- **Clean & Minimal**: Shows only what you need without clutter
+- **Model, directory, branch at a glance**: the three things that answer "where am I?"
+- **Absolute token counter**: context-window-size agnostic — works whether you're on 200k or 1M
+- **Clean & Minimal**: no percentage, no bar, no color — just the facts
 
 ## Repository Structure
 
@@ -157,38 +152,30 @@ rm ~/.claude/statusline.sh
 
 ## Customization
 
-The statusline is configurable by editing `~/.claude/statusline.sh` after installation:
+The statusline is configurable by editing `~/.claude/statusline.sh` after installation.
 
-### Change Color Thresholds
+### Reorder / remove sections
 
-```bash
-# In the color_pct() function, adjust thresholds:
-if [ "$pct" -lt 50 ]; then      # Green threshold
-    ...
-elif [ "$pct" -lt 80 ]; then    # Yellow threshold
-    ...
-```
-
-### Change Progress Bar Width
+The final output is built near the bottom of `statusline.sh`:
 
 ```bash
-# In the progress_bar() function:
-local width=5    # Change to 10 for a wider bar
+output="🤖 $model_name | 📁 $folder"
+[ -n "$branch" ] && output="$output | 🌿 $branch"
+output="$output | 🧠 $session_formatted | 📝 $output_style"
 ```
+
+Drop or reorder pieces as you like.
 
 ### Available JSON Fields
 
-The script receives this JSON from Claude Code:
+The script receives this JSON from Claude Code (only the fields actually used are shown below; more are available — see `context_window.used_percentage`, `remaining_percentage`, `context_window_size` if you want to re-add a percent display):
 
 ```json
 {
-  "model": { "display_name": "Opus 4.5" },
+  "model": { "display_name": "Opus 4.7" },
   "workspace": { "current_dir": "/path/to/project" },
   "output_style": { "name": "Explanatory" },
   "context_window": {
-    "used_percentage": 28.5,
-    "remaining_percentage": 71.5,
-    "context_window_size": 200000,
     "total_input_tokens": 45000,
     "total_output_tokens": 12000
   }
@@ -197,7 +184,7 @@ The script receives this JSON from Claude Code:
 
 ## Version History
 
-Current version: **v3.1.0**
+Current version: **v3.2.0**
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed release history and changes.
 
@@ -216,10 +203,9 @@ Common issues:
 
 1. Claude Code calls `statusline.sh` and passes JSON data via stdin
 2. Script extracts model, directory, and token data from JSON
-3. Uses `used_percentage` for accurate context window state (handles compaction)
-4. Calculates visual progress bar and applies color coding
-5. Checks if the current directory is a git repository
-6. Returns formatted statusline string with ANSI color codes
+3. Sums `total_input_tokens` + `total_output_tokens` for the session counter
+4. Checks if the current directory is a git repository
+5. Formats tokens with `k` / `M` suffix and returns the assembled string
 
 ## License
 
